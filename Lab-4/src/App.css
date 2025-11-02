@@ -40,3 +40,19 @@
 .read-the-docs {
   color: #888;
 }
+
+.post-form {
+  margin-bottom: 15px;
+}
+
+.post {
+  width: 720px;
+  border: 1px solid white;
+  border-radius: 8px;
+}
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
