@@ -15,11 +15,42 @@ import posts from "../data/posts.js";
 
 function FakeApiApp() {
     const [postList, setPostList] = useState(posts);
+    const [newPost, setNewPost] = useState({
+        "userId": 0,
+        "id": Math.max(...posts.map(post => post.id)) + 1,
+        "title": "",
+        "body": ""
+    });
+
+    const handleChange = (e) => {
+        setNewPost({
+            ...newPost,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // alert(`title: ${newPost.name}, body: ${newPost.body}`);
+        if (newPost.title === "" || newPost.body === "" ) return;
+        setPostList(prevPostList => {
+            const newPostList = [...prevPostList, newPost];
+            return newPostList;
+        });
+        setNewPost(prevNewPost => {
+            return {
+                "userId": 0,
+                "id": prevNewPost.id + 1,
+                "title": "",
+                "body": ""
+            };
+        });
+    };
 
     return (
         <div>
             <h1>Fake API App</h1>
-            <PostForm />
+            <PostForm newPost={newPost} handleChange={handleChange} handleSubmit={handleSubmit} />
             <PostsContainer postList={postList} />
         </div>
     );

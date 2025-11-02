@@ -11,7 +11,7 @@ import PostCard from './PostCard.jsx'
 function PostsContainer({ postList }) {
     return (
         <div className='posts-container'>
-            {postList.map((post) => (
+            {[...postList].sort((a, b) => b.id - a.id).map((post) => (
                 <PostCard key={post.id} post={post} />
             ))}
         </div>
