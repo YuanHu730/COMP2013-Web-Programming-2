@@ -9,18 +9,35 @@ FakeApiApp, this is the logical component of the app that will contain three sta
 
 import PostForm from './PostForm.jsx';
 import PostsContainer from './PostsContainer.jsx';
-import { useState } from "react";
-import posts from "../data/posts.js";
+import { useState, useEffect } from "react";
+// import posts from "../data/posts.js";
 
 
 function FakeApiApp() {
-    const [postList, setPostList] = useState(posts);
     const [newPost, setNewPost] = useState({
         "userId": 0,
-        "id": Math.max(...posts.map(post => post.id)) + 1,
+        "id": 0,
         "title": "",
         "body": ""
     });
+
+    const [postList, setPostList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        fetchPosts();
+    }, []);
+  
+    const fetchPosts = async () => {
+        // await new Promise(resolve => setTimeout(resolve, 10000));
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+        const posts = await response.json();
+        setPostList(posts);
+        setNewPost({
+            ...newPost,
+            "id": Math.max(...posts.map(post => post.id)) + 1
+        });
+        setIsLoading(false);
+    };
 
     const handleChange = (e) => {
         setNewPost({
@@ -49,6 +66,7 @@ function FakeApiApp() {
 
     return (
         <div>
+            {isLoading && <h1 class='hint'>Loading...</h1>}
             <h1>Fake API App</h1>
             <PostForm newPost={newPost} handleChange={handleChange} handleSubmit={handleSubmit} />
             <PostsContainer postList={postList} />

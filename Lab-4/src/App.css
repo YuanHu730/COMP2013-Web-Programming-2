@@ -56,3 +56,8 @@
   flex-direction: column;
   gap: 15px;
 }
+
+.hint {
+  color: green;
+  font-weight: bold;
+}
